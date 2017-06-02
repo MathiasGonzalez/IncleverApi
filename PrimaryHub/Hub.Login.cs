@@ -38,8 +38,8 @@ namespace PrimaryHub
 
 
                 if (usuario!=null)
-                {
-                    #region usuario registrado
+                { 
+                    #region usuario registrado s
                     input.User.email = usuario.email;
                     return new LogInOut { User = input.User, result = "OK" };
                     #endregion
