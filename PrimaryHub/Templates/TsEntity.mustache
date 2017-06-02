@@ -1,0 +1,12 @@
+﻿
+export class {{&Nombre}} {
+    actionName: string;
+    type: string;
+    schema: string;
+    constructor() { }     
+    {{#propiedades}}
+    {{#atributo}}[{{atributo}}]{{/atributo}}
+    public {{nombre}} : {{tipo}} ;
+    {{/propiedades}}   
+
+}
