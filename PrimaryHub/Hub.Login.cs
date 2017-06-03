@@ -32,13 +32,17 @@ namespace PrimaryHub
 
             using (var db = new DA.db())
             {
+                if (newUser.password != null)
+                {
+                    newUser.password = Hasher.GetHashString(newUser.password);
+                }
                 var usuario = db.Usuarios.Where(user =>
                  user.password == newUser.password
                  && (user.userName == newUser.userName || user.email == newUser.email)).SingleOrDefault();
 
 
-                if (usuario!=null)
-                { 
+                if (usuario != null)
+                {
                     #region usuario registrado s
                     input.User.email = usuario.email;
                     return new LogInOut { User = input.User, result = "OK" };
@@ -103,6 +107,10 @@ namespace PrimaryHub
                 {
                     try
                     {
+                        if (newUser.password != null)
+                        {
+                            newUser.password = Hasher.GetHashString(newUser.password);
+                        }
                         db.Usuarios.Add(newUser);
                         db.SaveChanges();
                         transaction.Commit();
