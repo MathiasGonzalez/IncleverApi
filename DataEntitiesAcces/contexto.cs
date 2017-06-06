@@ -54,6 +54,7 @@ where TContext : DbContext
         public DbSet<Category> Categorys { get; set; }
         public DbSet<GroupPermission> GroupPermissions { get; set; }
         public DbSet<Snippet> Snippets { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
 
         private static string strConCnf
@@ -62,8 +63,10 @@ where TContext : DbContext
             {
 
 #if (DEBUG)
-                return @"Data Source=DESKTOP-8RQ2CBK\LOCALHOST; Database = inclever; User Id = sa;
-                Password = tito90; ";
+                //return @"Data Source=DESKTOP-8RQ2CBK\LOCALHOST; Database = inclever; User Id = sa;
+                //Password = tito90; ";
+                return
+                "Data Source=localhost;Database = EnviromentsAuth ;User ID=UY_Infocorp_ICBanking;Password=Infocorp2013";
                 //Data Source = DESKTOP - JGOVRF2\LOCAL; Integrated Security = True; Connect Timeout = 15; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False
 #else
                 return    @"Data Source=localhost;Initial Catalog=inclever;Integrated Security=false;User ID=inclever;Password=tito90";

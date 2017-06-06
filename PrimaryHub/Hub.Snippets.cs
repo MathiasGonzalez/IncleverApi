@@ -4,7 +4,7 @@ using PrimaryHub.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DA = DataEntitiesAcces;
+using DaEntities = DataEntitiesAcces.CommonEntities;
 using System.Data.Entity;
 
 
@@ -25,12 +25,12 @@ namespace PrimaryHub
             //});
 
 
-            using (var db = new DA.db())
+            using (var db = new DataEntitiesAcces.db())
             {
                 var usuario = db.Usuarios.Where(user =>
                  user.userid == input.user.userid).SingleOrDefault();
 
-                List<DA.CommonEntities.Snippet> snippets = new List<DA.CommonEntities.Snippet>();
+                List<DaEntities.Snippet> snippets = new List<DaEntities.Snippet>();
                 if (input.user != null)
                 {
                     var permissions = db.GroupPermissions.Where(gPermission => gPermission.userid == input.user.userid).Select(g => g.groupid).ToList();
@@ -64,7 +64,7 @@ namespace PrimaryHub
             //});
 
 
-            using (var db = new DA.db())
+            using (var db = new DataEntitiesAcces.db())
             {
                 var usuario = db.Usuarios.Where(user =>
                  user.password == input.user.password
@@ -79,7 +79,7 @@ namespace PrimaryHub
                     #region No existe el grupo privado > crearlo
                     if (grupoPrivado == null)
                     {
-                        var addedGroup = db.Groups.Add(new DA.CommonEntities.Group()
+                        var addedGroup = db.Groups.Add(new DaEntities.Group()
                         {
                             date = DateTime.Now,
                             description = "PRIVADO",
@@ -89,7 +89,7 @@ namespace PrimaryHub
                         db.SaveChanges();
                         #region Agregar permiso
                         grupoPrivado = db.Groups.Where(grp => grp.isPrivate == true).SingleOrDefault();
-                        db.GroupPermissions.Add(new DA.CommonEntities.GroupPermission()
+                        db.GroupPermissions.Add(new DaEntities.GroupPermission()
                         {
                             userid = usuario.userid,
                             groupid = grupoPrivado.groupid
@@ -103,7 +103,7 @@ namespace PrimaryHub
                 }
 
 
-                DA.CommonEntities.Snippet newSnippet = SnippetFromDB(input.snippet);  
+                DaEntities.Snippet newSnippet = SnippetMapper(input.snippet);  
 
                 db.Snippets.Add(newSnippet);
 
@@ -112,11 +112,11 @@ namespace PrimaryHub
             return result;
         }
 
-        Snippet SnippetFromDB(DA.CommonEntities.Snippet snippet)
+        Snippet SnippetFromDB(DaEntities.Snippet snippet)
         {
             var ret = new Snippet();
             ret.fields = new List<Field>();
-            TinyMapper.Bind<DA.CommonEntities.Field, Field>(config => { config.Ignore(f => f.snipett); });
+            TinyMapper.Bind<DaEntities.Field, Field>(config => { config.Ignore(f => f.snipett); });
             if (snippet.fields != null)
                 snippet.fields.ForEach(orgField => { ret.fields.Add(TinyMapper.Map<Field>(orgField)); });
             ret.description = snippet.description;
@@ -126,13 +126,13 @@ namespace PrimaryHub
             ret.title = snippet.title;
             return ret;
         }
-        DA.CommonEntities.Snippet SnippetFromDB(Snippet snippet)
+        DaEntities.Snippet SnippetMapper(Snippet snippet)
         {
-            var ret = new DA.CommonEntities.Snippet();
-            TinyMapper.Bind<Field, DA.CommonEntities.Field>(config => { config.Ignore(f => f.snipett); });
-            ret.fields = new List<DA.CommonEntities.Field>();
+            var ret = new DaEntities.Snippet();
+            TinyMapper.Bind<Field, DaEntities.Field>(config => { config.Ignore(f => f.snipett); });
+            ret.fields = new List<DaEntities.Field>();
             if (snippet.fields != null)
-                snippet.fields.ForEach(orgField => { ret.fields.Add(TinyMapper.Map<DA.CommonEntities.Field>(orgField)); });
+                snippet.fields.ForEach(orgField => { ret.fields.Add(TinyMapper.Map<DaEntities.Field>(orgField)); });
             ret.description = snippet.description;
             ret.groupid = snippet.groupid;
             ret.snipetid = snippet.snipetid;

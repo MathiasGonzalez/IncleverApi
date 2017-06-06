@@ -11,6 +11,7 @@ using DA = DataEntitiesAcces;
 
 namespace PrimaryHub
 {
+    using Enums;
     public partial class Hub
     {
 
@@ -36,6 +37,7 @@ namespace PrimaryHub
                 {
                     newUser.password = Hasher.GetHashString(newUser.password);
                 }
+
                 var usuario = db.Usuarios.Where(user =>
                  user.password == newUser.password
                  && (user.userName == newUser.userName || user.email == newUser.email)).SingleOrDefault();
@@ -46,12 +48,13 @@ namespace PrimaryHub
                     #region usuario registrado 
                     input.User.email = usuario.email;
                     input.User.userid = usuario.userid;
+                    input.User.UID = usuario.UID;
                     return new LogInOut { User = input.User, result = "OK" };
                     #endregion
                 }
                 else
                 {
-                    if (input.FireBaseForce)
+                    if (input.FireBaseForce && newUser.email != null)
                     {
 
                         #region Si no existe un usuario con ese email lo creo
@@ -65,17 +68,15 @@ namespace PrimaryHub
                             });
                         }
                         #endregion
-                        usuario = db.Usuarios.Where(user =>
-                            (user.userName == newUser.userName || user.email == newUser.email)).SingleOrDefault();
+                        usuario = db.Usuarios.Where(user => user.email == newUser.email).SingleOrDefault();
                         TinyMapper.Bind<DA.CommonEntities.User, User>(config =>
                          {
                          });
                         return new LogInOut() { result = "FIREBASE", User = TinyMapper.Map<User>(usuario) };
-
                     }
                     else
                     {
-                        return new LogInOut() { result = "FAIL" };
+                        return new LogInOut() { result = newUser.userName == null && newUser.email == null ? "NULLDATA" : "FAIL" };
                     }
                 }
 
@@ -85,9 +86,12 @@ namespace PrimaryHub
 
         public SignUpOut SignUp(SignUpIn input)
         {
+            SignUpOut result = new SignUpOut { result = "Error" };
+
+
             if (input.User == null)
             {
-                return new SignUpOut { result = "Error" };
+                return result;
             }
 
             TinyMapper.Bind<User, DA.CommonEntities.User>(config =>
@@ -113,12 +117,15 @@ namespace PrimaryHub
                 {
                     try
                     {
+                        #region hasheo password
                         if (newUser.password != null)
                         {
                             newUser.password = Hasher.GetHashString(newUser.password);
                         }
+                        #endregion
 
                         #region add new user
+                        newUser.status = UserStatus.Activo;
                         db.Usuarios.Add(newUser);
                         db.SaveChanges();
                         #endregion
@@ -136,16 +143,18 @@ namespace PrimaryHub
                         #endregion
 
                         transaction.Commit();
+                        TinyMapper.Bind<DA.CommonEntities.User, User>(config => { });
+                        result = new SignUpOut() { result = "OK", User = TinyMapper.Map<User>(addedUser) };
                     }
                     catch (Exception ex)
                     {
 
                         transaction.Rollback();
-                        return new SignUpOut { result = "Error transaccion DA" };
+                        return new SignUpOut { result = "Error transaccion DA : " + ex.Message };
                     }
                 }
             }
-            return new SignUpOut { result = "Error" };
+            return result;
 
 
         }

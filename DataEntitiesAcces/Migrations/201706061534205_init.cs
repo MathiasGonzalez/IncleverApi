@@ -73,7 +73,6 @@ namespace DataEntitiesAcces.Migrations
                         groupid = c.Int(),
                         title = c.String(),
                         description = c.String(),
-                        tags = c.String(),
                         date = c.DateTime(),
                     })
                 .PrimaryKey(t => t.snipetid)
@@ -97,6 +96,14 @@ namespace DataEntitiesAcces.Migrations
                 .Index(t => t.categoryid);
             
             CreateTable(
+                "dbo.Tags",
+                c => new
+                    {
+                        tag = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.tag);
+            
+            CreateTable(
                 "dbo.GroupPermissions",
                 c => new
                     {
@@ -111,17 +118,34 @@ namespace DataEntitiesAcces.Migrations
                 .Index(t => t.groupid)
                 .Index(t => t.userid);
             
+            CreateTable(
+                "dbo.TagSnippets",
+                c => new
+                    {
+                        Tag_tag = c.String(nullable: false, maxLength: 128),
+                        Snippet_snipetid = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Tag_tag, t.Snippet_snipetid })
+                .ForeignKey("dbo.Tags", t => t.Tag_tag, cascadeDelete: true)
+                .ForeignKey("dbo.Snippets", t => t.Snippet_snipetid, cascadeDelete: true)
+                .Index(t => t.Tag_tag)
+                .Index(t => t.Snippet_snipetid);
+            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.GroupPermissions", "userid", "dbo.Users");
             DropForeignKey("dbo.GroupPermissions", "groupid", "dbo.Groups");
+            DropForeignKey("dbo.TagSnippets", "Snippet_snipetid", "dbo.Snippets");
+            DropForeignKey("dbo.TagSnippets", "Tag_tag", "dbo.Tags");
             DropForeignKey("dbo.Snippets", "groupid", "dbo.Groups");
             DropForeignKey("dbo.Fields", "Group_groupid", "dbo.Groups");
             DropForeignKey("dbo.Groups", "categoryid", "dbo.Categories");
             DropForeignKey("dbo.Fields", "snipettid", "dbo.Snippets");
             DropForeignKey("dbo.Accounts", "userid", "dbo.Users");
+            DropIndex("dbo.TagSnippets", new[] { "Snippet_snipetid" });
+            DropIndex("dbo.TagSnippets", new[] { "Tag_tag" });
             DropIndex("dbo.GroupPermissions", new[] { "userid" });
             DropIndex("dbo.GroupPermissions", new[] { "groupid" });
             DropIndex("dbo.Groups", new[] { "categoryid" });
@@ -129,7 +153,9 @@ namespace DataEntitiesAcces.Migrations
             DropIndex("dbo.Fields", new[] { "Group_groupid" });
             DropIndex("dbo.Fields", new[] { "snipettid" });
             DropIndex("dbo.Accounts", new[] { "userid" });
+            DropTable("dbo.TagSnippets");
             DropTable("dbo.GroupPermissions");
+            DropTable("dbo.Tags");
             DropTable("dbo.Groups");
             DropTable("dbo.Snippets");
             DropTable("dbo.Fields");

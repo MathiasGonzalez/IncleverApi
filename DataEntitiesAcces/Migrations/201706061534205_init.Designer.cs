@@ -13,7 +13,7 @@ namespace DataEntitiesAcces.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201706031658044_init"; }
+            get { return "201706061534205_init"; }
         }
         
         string IMigrationMetadata.Source

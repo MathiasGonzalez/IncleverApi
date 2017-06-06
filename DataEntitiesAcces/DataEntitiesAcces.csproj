@@ -56,15 +56,12 @@
     <Compile Include="CommonEntities\Group.cs" />
     <Compile Include="CommonEntities\GroupPermission.cs" />
     <Compile Include="CommonEntities\Snippet.cs" />
+    <Compile Include="CommonEntities\Tag.cs" />
     <Compile Include="CommonEntities\User.cs" />
     <Compile Include="contexto.cs" />
-    <Compile Include="Migrations\201706031658044_init.cs" />
-    <Compile Include="Migrations\201706031658044_init.Designer.cs">
-      <DependentUpon>201706031658044_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706042046593_fsdf.cs" />
-    <Compile Include="Migrations\201706042046593_fsdf.Designer.cs">
-      <DependentUpon>201706042046593_fsdf.cs</DependentUpon>
+    <Compile Include="Migrations\201706061534205_init.cs" />
+    <Compile Include="Migrations\201706061534205_init.Designer.cs">
+      <DependentUpon>201706061534205_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,11 +78,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706031658044_init.resx">
-      <DependentUpon>201706031658044_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706042046593_fsdf.resx">
-      <DependentUpon>201706042046593_fsdf.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706061534205_init.resx">
+      <DependentUpon>201706061534205_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

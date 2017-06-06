@@ -22,11 +22,11 @@ namespace DataEntitiesAcces.CommonEntities
 
         public string description { get; set; }
 
-        public string tags { get; set; }
+        public virtual List<Tag> tags { get; set; }
 
         public DateTime? date { get; set; }
 
-        public List<Field> fields { get; set; }
+        public virtual List<Field> fields { get; set; }
 
         [ForeignKey("groupid")]
         public Group group { get; set; }

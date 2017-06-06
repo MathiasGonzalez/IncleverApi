@@ -16,7 +16,7 @@ namespace Entities
 
         public string description { get; set; }
 
-        public List<string> tags { get; set; }
+        public  List<Tag> tags { get; set; }
 
         public DateTime? date { get; set; }
 
