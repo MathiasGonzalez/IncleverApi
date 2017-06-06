@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace DataEntitiesAcces.CommonEntities
 {
-    [Table("Genres")]
-    public class Genre
+    public class Account
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int GenreId { get; set; }
+        [ForeignKey("user")]
+        public Guid? userid { get; set; }
 
-        public string Title { get; set; }
+        public long? logins { get; set; }
 
-        //public virtual List<Movie> Movies { get; set; }
+        public bool? seePublic { get; set; }
 
+        public bool? onlyPrivate { get; set; }
+
+        public User user { get; set; }
     }
 }

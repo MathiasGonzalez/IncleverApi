@@ -1,4 +1,4 @@
-﻿using DataEntitiesAcces;
+﻿
 using Entities;
 using Nelibur.ObjectMapper;
 using Parameters;
@@ -43,8 +43,9 @@ namespace PrimaryHub
 
                 if (usuario != null)
                 {
-                    #region usuario registrado s
+                    #region usuario registrado 
                     input.User.email = usuario.email;
+                    input.User.userid = usuario.userid;
                     return new LogInOut { User = input.User, result = "OK" };
                     #endregion
                 }
@@ -64,8 +65,13 @@ namespace PrimaryHub
                             });
                         }
                         #endregion
+                        usuario = db.Usuarios.Where(user =>
+                            (user.userName == newUser.userName || user.email == newUser.email)).SingleOrDefault();
+                        TinyMapper.Bind<DA.CommonEntities.User, User>(config =>
+                         {
+                         });
+                        return new LogInOut() { result = "FIREBASE", User = TinyMapper.Map<User>(usuario) };
 
-                        return new LogInOut() { result = "FIREBASE" };
                     }
                     else
                     {
@@ -111,8 +117,24 @@ namespace PrimaryHub
                         {
                             newUser.password = Hasher.GetHashString(newUser.password);
                         }
+
+                        #region add new user
                         db.Usuarios.Add(newUser);
                         db.SaveChanges();
+                        #endregion
+
+                        #region add new Account for the user
+                        var addedUser = db.Usuarios.Where(user => user.email == newUser.email || user.userName == newUser.userName).Single();
+                        db.Accounts.Add(new DA.CommonEntities.Account()
+                        {
+                            onlyPrivate = false,
+                            seePublic = true,
+                            logins = 0,
+                            userid = addedUser.userid
+                        });
+                        db.SaveChanges();
+                        #endregion
+
                         transaction.Commit();
                     }
                     catch (Exception ex)

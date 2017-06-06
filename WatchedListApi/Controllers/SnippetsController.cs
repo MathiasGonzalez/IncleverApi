@@ -1,5 +1,4 @@
-﻿using Parameters;
-using PrimaryHub;
+﻿using PrimaryHub.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +10,17 @@ using System.Web.Http.Cors;
 namespace Angular4API.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class LoginController : BaseController
+    public class SnippetsController : BaseController
     {
-        
         [HttpPost]
-        public LogInOut LogIn([FromBody]LogInIn input)
+        public FirstSnippetsOut FirstSnippets([FromBody]FirstSnippetsIn input)
         {
-            return PrimaryHub.LogIn(input);
+            return PrimaryHub.FirstSnippets(input);
         }
-
         [HttpPost]
-        public SignUpOut SignUp([FromBody]SignUpIn input)
+        public AddSnippetOut AddSnippet([FromBody]AddSnippetIn input)
         {
-            return PrimaryHub.SignUp(input);
+            return PrimaryHub.AddSnippet(input);
         }
     }
 }

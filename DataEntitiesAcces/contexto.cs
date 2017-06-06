@@ -41,16 +41,19 @@ where TContext : DbContext
     }
     public class db : DbContext
     {
-       
+
         // public DbSet<pr> Clientes { get; set; }
 
         // public DbSet<pr> Telefonos { get; set; }
 
         //public DbSet<Interaction> Interactions { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<VisualSection> VisualSections { get; set; }
-        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Account> Accounts { get; set; }
         public DbSet<User> Usuarios { get; set; }
+        public DbSet<Field> Fields { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Category> Categorys { get; set; }
+        public DbSet<GroupPermission> GroupPermissions { get; set; }
+        public DbSet<Snippet> Snippets { get; set; }
 
 
         private static string strConCnf

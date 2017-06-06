@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "WatchedListApi\Api.csproj", "{BBE18AD4-DE41-4A76-8545-EC0925C680CE}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimaryHub", "PrimaryHub\PrimaryHub.csproj", "{17000A72-B4EF-4251-9A37-29E64CEEEFF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zipTools", "zipTools\zipTools.csproj", "{EBC684A4-1215-4D15-8ACD-F6F62647F3B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enums", "Enums\Enums.csproj", "{B542952B-A768-4D6A-8767-BF23C3826AE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{EBC684A4-1215-4D15-8ACD-F6F62647F3B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBC684A4-1215-4D15-8ACD-F6F62647F3B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBC684A4-1215-4D15-8ACD-F6F62647F3B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B542952B-A768-4D6A-8767-BF23C3826AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B542952B-A768-4D6A-8767-BF23C3826AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B542952B-A768-4D6A-8767-BF23C3826AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B542952B-A768-4D6A-8767-BF23C3826AE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
