@@ -12,7 +12,7 @@ namespace DataEntitiesAcces.CommonEntities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? groupid { get; set; }
+        public int? groupid { get; set; }             
 
         public string title { get; set; }
 
@@ -29,6 +29,6 @@ namespace DataEntitiesAcces.CommonEntities
         [ForeignKey("categoryid")]
         public Category category { get; set; }
 
-        public List<Field> fields { get; set; }
+        public virtual List<Field> fields { get; set; }
     }
 }

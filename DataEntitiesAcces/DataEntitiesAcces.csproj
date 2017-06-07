@@ -59,9 +59,9 @@
     <Compile Include="CommonEntities\Tag.cs" />
     <Compile Include="CommonEntities\User.cs" />
     <Compile Include="contexto.cs" />
-    <Compile Include="Migrations\201706061534205_init.cs" />
-    <Compile Include="Migrations\201706061534205_init.Designer.cs">
-      <DependentUpon>201706061534205_init.cs</DependentUpon>
+    <Compile Include="Migrations\201706062104463_init.cs" />
+    <Compile Include="Migrations\201706062104463_init.Designer.cs">
+      <DependentUpon>201706062104463_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,8 +78,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706061534205_init.resx">
-      <DependentUpon>201706061534205_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706062104463_init.resx">
+      <DependentUpon>201706062104463_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

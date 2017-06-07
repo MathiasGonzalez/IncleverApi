@@ -7,7 +7,7 @@ namespace Entities
     public class Group
     {
         
-        public int? groupid { get; set; }
+        public int? groupid { get; set; }            
 
         public string title { get; set; }
 

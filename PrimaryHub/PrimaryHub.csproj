@@ -92,6 +92,10 @@
       <Project>{9e4f637b-44ea-4258-8bb3-80f3196b7b2c}</Project>
       <Name>Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Enums\Enums.csproj">
+      <Project>{b542952b-a768-4d6a-8767-bf23c3826ae4}</Project>
+      <Name>Enums</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,6 @@
-﻿using Parameters;
+﻿
 using PrimaryHub;
+using PrimaryHub.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
