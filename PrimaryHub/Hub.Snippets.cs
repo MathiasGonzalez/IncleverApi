@@ -42,7 +42,7 @@ namespace PrimaryHub
 
                     if (permissions != null && permissions.Count > 0)
                     {
-                        snippets = db.Snippets.Include(x=>x.fields).Join(permissions, s => s.groupid, per => per, (s, g) => s).ToList();
+                        snippets = db.Snippets.Include(x => x.fields).Join(permissions, s => s.groupid, per => per, (s, g) => s).ToList();
                     }
 
                     //snippets.ForEach(s =>
@@ -80,8 +80,8 @@ namespace PrimaryHub
                     var usuario = db.Usuarios.Where(user =>
                      user.password == input.user.password
                      && (user.userName == input.user.userName || user.email == input.user.email)).SingleOrDefault();
-                        
-                    
+
+
 
 
                     if (input.snippet.groupid == null)
@@ -147,6 +147,38 @@ namespace PrimaryHub
             }
         }
 
+        public AddSnippetOut EditSnippet(AddSnippetIn input)
+        {
+            var result = new AddSnippetOut();
+            try
+            {
+                using (var db = new DataEntitiesAcces.db())
+                {
+
+                    var usuario = db.Usuarios.Where(user =>
+                     user.password == input.user.password
+                     && (user.userName == input.user.userName || user.email == input.user.email)).SingleOrDefault();
+
+                    DaEntities.Snippet editedSnippet = db.Snippets.Include(snp => snp).Where(snp => snp.id == input.snippet.id).SingleOrDefault();
+                    //trato de eliminar los fields que de todas formas se agreagaran
+                    db.Fields.RemoveRange(editedSnippet.fields);
+
+                    db.SaveChanges();
+
+                    SnippetMapper(input.snippet, editedSnippet);
+
+                    db.SaveChanges();
+
+                    return new AddSnippetOut() { user = input.user, snippet = input.snippet, result = "OK" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new AddSnippetOut() { result = ex.Message };
+            }
+        }
+
+
         Snippet SnippetFromDB(DaEntities.Snippet snippet)
         {
             if (snippet == null)
@@ -165,17 +197,19 @@ namespace PrimaryHub
             ret.title = snippet.title;
             return ret;
         }
-        DaEntities.Snippet SnippetMapper(Snippet snippet)
+        DaEntities.Snippet SnippetMapper(Snippet snippet, DaEntities.Snippet mod = null)
         {
             if (snippet == null)
             {
                 return null;
             }
-            var ret = new DaEntities.Snippet();
+            var ret = mod ?? new DaEntities.Snippet();
             TinyMapper.Bind<Field, DaEntities.Field>(config => { config.Ignore(f => f.snipett); });
             ret.fields = new List<DaEntities.Field>();
             if (snippet.fields != null)
+            {
                 snippet.fields.ForEach(orgField => { ret.fields.Add(TinyMapper.Map<DaEntities.Field>(orgField)); });
+            }
             ret.description = snippet.description;
             ret.groupid = snippet.groupid;
             ret.snipetid = snippet.snipetid;

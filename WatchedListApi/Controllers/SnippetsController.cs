@@ -17,10 +17,17 @@ namespace Angular4API.Controllers
         {
             return PrimaryHub.FirstSnippets(input);
         }
+
         [HttpPost]
         public AddSnippetOut AddSnippet([FromBody]AddSnippetIn input)
         {
             return PrimaryHub.AddSnippet(input);
+        }
+
+        [HttpPost]
+        public AddSnippetOut EditSnippet([FromBody]AddSnippetIn input)
+        {
+            return PrimaryHub.EditSnippet(input);
         }
     }
 }
