@@ -159,7 +159,7 @@ namespace PrimaryHub
                      user.password == input.user.password
                      && (user.userName == input.user.userName || user.email == input.user.email)).SingleOrDefault();
 
-                    DaEntities.Snippet editedSnippet = db.Snippets.Include(snp => snp).Where(snp => snp.id == input.snippet.id).SingleOrDefault();
+                    DaEntities.Snippet editedSnippet = db.Snippets.Include(snp => snp.fields).Where(snp => snp.id == input.snippet.id).SingleOrDefault();
                     //trato de eliminar los fields que de todas formas se agreagaran
                     db.Fields.RemoveRange(editedSnippet.fields);
 

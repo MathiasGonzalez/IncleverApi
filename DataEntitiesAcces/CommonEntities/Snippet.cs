@@ -29,6 +29,6 @@ namespace DataEntitiesAcces.CommonEntities
         public virtual List<Field> fields { get; set; }
 
         [ForeignKey("groupid")]
-        public Group group { get; set; }
+        public virtual Group group { get; set; }
     }
 }

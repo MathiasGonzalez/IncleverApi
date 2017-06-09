@@ -56,13 +56,10 @@ namespace DataEntitiesAcces.Migrations
                         isLink = c.Boolean(),
                         code = c.Int(),
                         snipettid = c.Guid(),
-                        Group_groupid = c.Int(),
                     })
                 .PrimaryKey(t => t.id)
                 .ForeignKey("dbo.Snippets", t => t.snipettid)
-                .ForeignKey("dbo.Groups", t => t.Group_groupid)
-                .Index(t => t.snipettid)
-                .Index(t => t.Group_groupid);
+                .Index(t => t.snipettid);
             
             CreateTable(
                 "dbo.Snippets",
@@ -141,7 +138,6 @@ namespace DataEntitiesAcces.Migrations
             DropForeignKey("dbo.TagSnippets", "Snippet_snipetid", "dbo.Snippets");
             DropForeignKey("dbo.TagSnippets", "Tag_tag", "dbo.Tags");
             DropForeignKey("dbo.Snippets", "groupid", "dbo.Groups");
-            DropForeignKey("dbo.Fields", "Group_groupid", "dbo.Groups");
             DropForeignKey("dbo.Groups", "categoryid", "dbo.Categories");
             DropForeignKey("dbo.Fields", "snipettid", "dbo.Snippets");
             DropForeignKey("dbo.Accounts", "userid", "dbo.Users");
@@ -151,7 +147,6 @@ namespace DataEntitiesAcces.Migrations
             DropIndex("dbo.GroupPermissions", new[] { "groupid" });
             DropIndex("dbo.Groups", new[] { "categoryid" });
             DropIndex("dbo.Snippets", new[] { "groupid" });
-            DropIndex("dbo.Fields", new[] { "Group_groupid" });
             DropIndex("dbo.Fields", new[] { "snipettid" });
             DropIndex("dbo.Accounts", new[] { "userid" });
             DropTable("dbo.TagSnippets");

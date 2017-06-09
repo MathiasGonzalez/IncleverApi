@@ -29,6 +29,6 @@ namespace DataEntitiesAcces.CommonEntities
         [ForeignKey("categoryid")]
         public Category category { get; set; }
 
-        public virtual List<Field> fields { get; set; }
+        public virtual List<Snippet> snippets { get; set; }
     }
 }

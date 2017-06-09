@@ -23,6 +23,6 @@ namespace Entities
 
         public Category category { get; set; }
 
-        public List<Field> fields { get; set; }
+        public List<Snippet> snippets { get; set; }
     }
 }

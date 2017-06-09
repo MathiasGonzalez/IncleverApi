@@ -13,6 +13,5 @@ namespace DataEntitiesAcces.CommonEntities
         public string tag { get; set; }
 
         public virtual List<Snippet> snippets { get; set; }
-
     }
 }
