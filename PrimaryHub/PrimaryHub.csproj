@@ -68,11 +68,13 @@
     <Compile Include="Aes.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DbHub.cs" />
+    <Compile Include="Hub.Groups.cs" />
     <Compile Include="Hub.Login.cs" />
     <Compile Include="Hub.Snippets.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Propiedad.cs" />
+    <Compile Include="Parameters\Parameters.Groups.cs" />
     <Compile Include="Parameters\Parameters.Log.cs" />
     <Compile Include="Parameters\Parameters.Snippets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

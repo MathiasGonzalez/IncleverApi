@@ -86,12 +86,9 @@ namespace PrimaryHub
 
                     if (input.snippet.groupid == null)
                     {
-                        #region Agregar a Privados
-
-                        GroupPermission permisoPrivado = null;
+                        #region Agregar a Privados                        
 
                         var permisoPrivadoDB = db.GroupPermissions.AsNoTracking().Where(gp => gp.userid == usuario.userid && gp.isprivate == true).SingleOrDefault();
-
 
                         #region No existe el grupo privado > crearlo
                         if (permisoPrivadoDB == null)
@@ -128,6 +125,7 @@ namespace PrimaryHub
                         }
                         input.snippet.groupid = permisoPrivadoDB.groupid;
                         #endregion
+
                         #endregion
                     }
 

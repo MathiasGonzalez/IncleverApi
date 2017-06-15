@@ -1,9 +1,5 @@
 ﻿using Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PrimaryHub.Parameters
 {
@@ -14,6 +10,7 @@ namespace PrimaryHub.Parameters
         public string result { get; set; }
     }
 
+    #region First Snippets
     public class FirstSnippetsOut : BaseParameter
     {
         public List<Snippet> snippets { get; set; }
@@ -22,7 +19,9 @@ namespace PrimaryHub.Parameters
     {
         public User user { get; set; }
     }
+    #endregion
 
+    #region Add Snippet
     public class AddSnippetOut : BaseParameter
     {
         public User user { get; set; }
@@ -34,6 +33,6 @@ namespace PrimaryHub.Parameters
         public Group group { get; set; }
         public User user { get; set; }
     }
-
+    #endregion
 
 }

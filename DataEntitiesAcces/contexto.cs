@@ -63,7 +63,7 @@ where TContext : DbContext
             {
 
 #if (DEBUG)
-                return @"Data Source=DESKTOP-8RQ2CBK\LOCALHOST; Database = inclever; User Id = sa;
+                return @"Data Source=DESKTOP-8GJII7E\SQLEXPRESS; Database = inclever; User Id = sa;
                 Password = tito90; ";
                 //return
                 //"Data Source=localhost;Database = EnviromentsAuth ;User ID=UY_Infocorp_ICBanking;Password=Infocorp2013";
