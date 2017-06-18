@@ -50,12 +50,13 @@ namespace PrimaryHub
                     //    s.fields = db.Fields.Where(f => f.snipettid == s.snipetid).ToList();
                     //});
 
-                    result.snippets = snippets.Select(s => { return SnippetFromDB(s); }).ToList();
+                    result.snippets = snippets.Select(s => { return SnippetMapper(s); }).ToList();
 
                 }
             }
             return result;
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -76,73 +77,94 @@ namespace PrimaryHub
             {
                 using (var db = new DataEntitiesAcces.db())
                 {
-
-                    var usuario = db.Usuarios.Where(user =>
-                     user.password == input.user.password
-                     && (user.userName == input.user.userName || user.email == input.user.email)).SingleOrDefault();
-
-
-
-
-                    if (input.snippet.groupid == null)
+                    using (var transaccion = db.Database.BeginTransaction())
                     {
-                        #region Agregar a Privados                        
 
-                        var permisoPrivadoDB = db.GroupPermissions.AsNoTracking().Where(gp => gp.userid == usuario.userid && gp.isprivate == true).SingleOrDefault();
-
-                        #region No existe el grupo privado > crearlo
-                        if (permisoPrivadoDB == null)
+                        try
                         {
 
+                            var usuario = db.Usuarios.Where(user =>
+                            user.password == input.user.password
+                            && (user.userName == input.user.userName || user.email == input.user.email)).SingleOrDefault();
 
-                            //permisoPrivado = GroupPermissionMapper(permisoPrivadoDB);
-                            var nuevoGrupoPrivado = new DaEntities.Group()
+
+
+                            #region No se especifica grupo > agregar a grupo por defecto
+                            if (input.snippet.groupid == null)
                             {
-                                date = DateTime.Now,
-                                description = "PRIVATE",
-                                isPrivate = true,
-                                title = "PRIVATE"
-                            };
+                                #region Agregar a Defecto                        
 
-                            db.Groups.Add(nuevoGrupoPrivado);
+                                var permisoPorDefectoDB = db.GroupPermissions.AsNoTracking().Where(gp => gp.userid == usuario.userid && gp.isdefault == true).SingleOrDefault();
 
-                            db.SaveChanges();
+                                #region No existe el grupo defecto > crearlo
+                                if (permisoPorDefectoDB == null)
+                                {
 
 
-                            #region Agregar permiso para el grupo privado
-                            //grupo creado recientemente
-                            permisoPrivadoDB = new DaEntities.GroupPermission()
-                            {
-                                isprivate = true,
-                                userid = usuario.userid,
-                                groupid = nuevoGrupoPrivado.groupid
-                            };
-                            db.GroupPermissions.Add(permisoPrivadoDB);
-                            db.SaveChanges();
+                                    //permisoPrivado = GroupPermissionMapper(permisoPrivadoDB);
+                                    var nuevoGrupoPrivado = new DaEntities.Group()
+                                    {
+                                        date = DateTime.Now,
+                                        description = "PRIVATE",
+                                        isPrivate = true,
+                                        title = "PRIVATE"
+                                    };
+
+                                    db.Groups.Add(nuevoGrupoPrivado);
+
+                                    db.SaveChanges();
+
+
+                                    #region Agregar permiso para el grupo privado
+                                    //grupo creado recientemente
+                                    permisoPorDefectoDB = new DaEntities.GroupPermission()
+                                    {
+                                        isprivate = true,
+                                        isdefault = true,
+                                        userid = usuario.userid,
+                                        groupid = nuevoGrupoPrivado.groupid
+                                    };
+                                    db.GroupPermissions.Add(permisoPorDefectoDB);
+                                    db.SaveChanges();
+                                    #endregion
+
+
+                                }
+                                input.snippet.groupid = permisoPorDefectoDB.groupid;
+                                #endregion
+
+                                #endregion
+                            }
                             #endregion
 
+                            DaEntities.Snippet newSnippet = SnippetMapper(input.snippet);
 
+                            db.Snippets.Add(newSnippet);
+
+                            db.SaveChanges();
+
+                            transaccion.Commit();
+
+                            input.snippet.id = newSnippet.id;
+
+                            result = new AddSnippetOut() { user = input.user, snippet = input.snippet, result = "OK" };
                         }
-                        input.snippet.groupid = permisoPrivadoDB.groupid;
-                        #endregion
+                        catch (Exception ex)
+                        {
+                            transaccion.Rollback();
+                            result = new AddSnippetOut() { result = ex.Message };
+                        }
 
-                        #endregion
                     }
-
-
-                    DaEntities.Snippet newSnippet = SnippetMapper(input.snippet);
-
-                    db.Snippets.Add(newSnippet);
-                    db.SaveChanges();
-                    input.snippet.id = newSnippet.id;
-                    return new AddSnippetOut() { user = input.user, snippet = input.snippet, result = "OK" };
 
                 }
             }
             catch (Exception ex)
             {
-                return new AddSnippetOut() { result = ex.Message };
+                result = new AddSnippetOut() { result = ex.Message };
             }
+
+            return result;
         }
 
         public AddSnippetOut EditSnippet(AddSnippetIn input)
@@ -152,32 +174,47 @@ namespace PrimaryHub
             {
                 using (var db = new DataEntitiesAcces.db())
                 {
+                    using (var transaccion = db.Database.BeginTransaction())
+                    {
 
-                    var usuario = db.Usuarios.Where(user =>
-                     user.password == input.user.password
-                     && (user.userName == input.user.userName || user.email == input.user.email)).SingleOrDefault();
+                        try
+                        {
 
-                    DaEntities.Snippet editedSnippet = db.Snippets.Include(snp => snp.fields).Where(snp => snp.id == input.snippet.id).SingleOrDefault();
-                    //trato de eliminar los fields que de todas formas se agreagaran
-                    db.Fields.RemoveRange(editedSnippet.fields);
+                            var usuario = db.Usuarios.Where(user =>
+                             user.password == input.user.password
+                             && (user.userName == input.user.userName || user.email == input.user.email)).SingleOrDefault();
 
-                    db.SaveChanges();
+                            DaEntities.Snippet editedSnippet = db.Snippets.Include(snp => snp.fields).Where(snp => snp.id == input.snippet.id).SingleOrDefault();
+                            //trato de eliminar los fields que de todas formas se agreagaran
+                            db.Fields.RemoveRange(editedSnippet.fields);
 
-                    SnippetMapper(input.snippet, editedSnippet);
+                            db.SaveChanges();
 
-                    db.SaveChanges();
+                            SnippetMapper(input.snippet, editedSnippet);
 
-                    return new AddSnippetOut() { user = input.user, snippet = input.snippet, result = "OK" };
+                            db.SaveChanges();
+
+                            transaccion.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaccion.Rollback();
+                            result = new AddSnippetOut() { result = ex.Message };
+                        }
+                    }
+
+                    result = new AddSnippetOut() { user = input.user, snippet = input.snippet, result = "OK" };
                 }
             }
             catch (Exception ex)
             {
-                return new AddSnippetOut() { result = ex.Message };
+                result = new AddSnippetOut() { result = ex.Message };
             }
+            return result;
         }
 
 
-        Snippet SnippetFromDB(DaEntities.Snippet snippet)
+        Snippet SnippetMapper(DaEntities.Snippet snippet)
         {
             if (snippet == null)
             {
@@ -202,6 +239,11 @@ namespace PrimaryHub
                 return null;
             }
             var ret = mod ?? new DaEntities.Snippet();
+
+            ret.snipetid = snippet.snipetid;
+
+            if (mod != null) ret.snipetid = mod.snipetid;
+
             TinyMapper.Bind<Field, DaEntities.Field>(config => { config.Ignore(f => f.snipett); });
             ret.fields = new List<DaEntities.Field>();
             if (snippet.fields != null)
@@ -210,7 +252,7 @@ namespace PrimaryHub
             }
             ret.description = snippet.description;
             ret.groupid = snippet.groupid;
-            ret.snipetid = snippet.snipetid;
+
             ret.date = snippet.date;
             ret.title = snippet.title;
             return ret;

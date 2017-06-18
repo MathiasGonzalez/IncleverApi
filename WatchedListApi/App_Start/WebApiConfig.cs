@@ -5,6 +5,7 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using IncleverApi.Converters;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Cors;
 
 namespace IncleverApi
 {
@@ -12,7 +13,8 @@ namespace IncleverApi
     {
         public static void Register(HttpConfiguration config)
         {
-            config.EnableCors();
+            config.EnableCors(new EnableCorsAttribute("*", "*", "POST,OPTIONS,GET"));                      
+
             registrarFormatters(config);
             // Configuración y servicios de API web            
             // Rutas de API web
@@ -27,9 +29,9 @@ namespace IncleverApi
             // handler de seguridad
             config.MessageHandlers.Add(new Handlers.ApiKeyHandler("clave", "DEV_KEY"));
             //query string handler
-            config.MessageHandlers.Add(new Handlers.QueryStringHandler());
+            //config.MessageHandlers.Add(new Handlers.QueryStringHandler());
 
-
+            //config.Filters.Add(new CustomAuAttribute());
             // model binders especificos
             config.Services.Insert(typeof(System.Web.Http.ModelBinding.ModelBinderProvider), 0, new Binders.FakeItemModelBinder());
 

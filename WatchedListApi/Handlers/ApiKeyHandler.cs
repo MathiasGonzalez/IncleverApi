@@ -18,7 +18,7 @@ namespace IncleverApi.Handlers
         public ApiKeyHandler(string key, string header)
         {
             Key = key;
-            Header = header;          
+            Header = header;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -35,21 +35,26 @@ namespace IncleverApi.Handlers
 
         private bool ValidateKey(HttpRequestMessage message)
         {
-            var query = message.RequestUri.ParseQueryString();
-            string key = query["key"];
-
-            var header = message.Headers.Where(h => h.Key.ToUpper() == Header).FirstOrDefault();
-
-            if (header.Key == null || header.Value == null || header.Value.Count() < 1)
+            //var query = message.RequestUri.ParseQueryString();
+            //string key = query["key"];
+            if (message.Method != HttpMethod.Options)
             {
-                return true;
-                throw new Exception($"  el header  : {Header}  tiene valor invalido o nulo :{Key}");
+
+                string key;
+                var header = message.Headers.Where(h => h.Key.ToUpper() == Header).FirstOrDefault();
+
+                if (header.Key == null || header.Value == null || header.Value.Count() < 1)
+                {
+
+                    throw new Exception($"  el header  : {Header}  tiene valor invalido o nulo : {Key}");
+                }
+                else
+                {
+                    key = header.Value.First();
+                    return (key == Key);
+                }
             }
-            else
-            {
-                key = header.Value.First();
-                return (key == Key);
-            }
+            return true;
         }
     }
 }

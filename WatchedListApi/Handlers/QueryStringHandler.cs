@@ -27,7 +27,7 @@ namespace IncleverApi.Handlers
             {
                 if (request.RequestUri.Query == null || request.RequestUri.Query == string.Empty)
                 {
-                    // request.RequestUri = new Uri(request.RequestUri.AbsoluteUri + "?description=completadoEnHandler");
+                   // request.RequestUri = new Uri(request.RequestUri.AbsoluteUri + "?description=completadoEnHandler");
                 }
                 else
                 {

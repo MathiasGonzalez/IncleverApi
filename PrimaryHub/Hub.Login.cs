@@ -28,11 +28,12 @@ namespace PrimaryHub
 
             //foreach (var x in items)
             {
-                newUser = TinyMapper.Map<DA.CommonEntities.User>(input.User);
+                newUser = TinyMapper.Map<DA.CommonEntities.User>(input.user);
             }
 
             using (var db = new DA.db())
             {
+
                 if (newUser.password != null)
                 {
                     newUser.password = Hasher.GetHashString(newUser.password);
@@ -46,10 +47,10 @@ namespace PrimaryHub
                 if (usuario != null)
                 {
                     #region usuario registrado 
-                    input.User.email = usuario.email;
-                    input.User.userid = usuario.userid;
-                    input.User.UID = usuario.UID;
-                    return new LogInOut { User = input.User, result = "OK" };
+                    input.user.email = usuario.email;
+                    input.user.userid = usuario.userid;
+                    input.user.UID = usuario.UID;
+                    return new LogInOut { user = input.user, result = "OK" };
                     #endregion
                 }
                 else
@@ -64,7 +65,7 @@ namespace PrimaryHub
                         {
                             SignUp(new SignUpIn()
                             {
-                                User = input.User
+                                user = input.user
                             });
                         }
                         #endregion
@@ -72,7 +73,7 @@ namespace PrimaryHub
                         TinyMapper.Bind<DA.CommonEntities.User, User>(config =>
                          {
                          });
-                        return new LogInOut() { result = "FIREBASE", User = TinyMapper.Map<User>(usuario) };
+                        return new LogInOut() { result = "FIREBASE", user = TinyMapper.Map<User>(usuario) };
                     }
                     else
                     {
@@ -89,7 +90,7 @@ namespace PrimaryHub
             SignUpOut result = new SignUpOut { result = "Error" };
 
 
-            if (input.User == null)
+            if (input.user == null)
             {
                 return result;
             }
@@ -99,7 +100,7 @@ namespace PrimaryHub
 
             });
 
-            var newUser = TinyMapper.Map<DA.CommonEntities.User>(input.User);
+            var newUser = TinyMapper.Map<DA.CommonEntities.User>(input.user);
 
             using (var db = new DA.db())
             {
@@ -113,7 +114,7 @@ namespace PrimaryHub
                     return new SignUpOut { result = "YA EXISTE" };
                 }
 
-                using (var transaction = db.Database.BeginTransaction())
+                using (var transaccion = db.Database.BeginTransaction())
                 {
                     try
                     {
@@ -142,15 +143,47 @@ namespace PrimaryHub
                         db.SaveChanges();
                         #endregion
 
-                        transaction.Commit();
+
+                        #region No existe el grupo defecto > crearlo
+
+                        #region Agregar Grupo por Defecto  
+                        //permisoPrivado = GroupPermissionMapper(permisoPrivadoDB);
+                        var nuevoGrupoPrivado = new DA.CommonEntities.Group()
+                        {
+                            date = DateTime.Now,
+                            description = "PRIVATE",
+                            isPrivate = true,
+                            title = "PRIVATE"
+                        };
+
+                        db.Groups.Add(nuevoGrupoPrivado);
+                        db.SaveChanges();
+                        #endregion
+
+                        #region Agregar permiso para el grupo nuevo
+                        //grupo creado recientemente
+                        var permisoPorDefectoDB = new DA.CommonEntities.GroupPermission()
+                        {
+                            isprivate = true,
+                            isdefault = true,
+                            userid = newUser.userid,
+                            groupid = nuevoGrupoPrivado.groupid
+                        };
+                        db.GroupPermissions.Add(permisoPorDefectoDB);
+                        db.SaveChanges();
+                        #endregion
+                       
+                        #endregion
+
+                        transaccion.Commit();
                         TinyMapper.Bind<DA.CommonEntities.User, User>(config => { });
-                        result = new SignUpOut() { result = "OK", User = TinyMapper.Map<User>(addedUser) };
+                        result = new SignUpOut() { result = "OK", user = TinyMapper.Map<User>(addedUser) };
                     }
                     catch (Exception ex)
                     {
 
-                        transaction.Rollback();
-                        return new SignUpOut { result = "Error transaccion DA : " + ex.Message };
+                        transaccion.Rollback();
+                        result = new SignUpOut { result = "Error transaccion DA : " + ex.Message };
                     }
                 }
             }

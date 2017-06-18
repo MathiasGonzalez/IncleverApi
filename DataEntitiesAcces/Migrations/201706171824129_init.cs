@@ -107,6 +107,7 @@ namespace DataEntitiesAcces.Migrations
                         groupid = c.Int(nullable: false),
                         userid = c.Guid(nullable: false),
                         favorite = c.Boolean(),
+                        isdefault = c.Boolean(),
                         isprivate = c.Boolean(),
                         sticky = c.Boolean(),
                     })

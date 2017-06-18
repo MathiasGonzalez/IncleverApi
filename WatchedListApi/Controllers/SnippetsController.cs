@@ -6,12 +6,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Angular4API.Attributes;
 
 namespace Angular4API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+
     public class SnippetsController : BaseController
     {
+        [CustomAuthorize]
         [HttpPost]
         public FirstSnippetsOut FirstSnippets([FromBody]FirstSnippetsIn input)
         {

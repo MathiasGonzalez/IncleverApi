@@ -300,6 +300,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Filters\" />
     <Folder Include="Generated\" />
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +344,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SnippetsController.cs" />
     <Compile Include="Converters\CustomConverter.cs" />
+    <Compile Include="Attributes\CustomAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

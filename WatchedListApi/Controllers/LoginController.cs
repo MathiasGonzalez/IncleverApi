@@ -11,16 +11,17 @@ using System.Web.Http.Cors;
 
 namespace Angular4API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+  
     public class LoginController : BaseController
     {
-        
+        [AllowAnonymous]
         [HttpPost]
         public LogInOut LogIn([FromBody]LogInIn input)
         {
             return PrimaryHub.LogIn(input);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public SignUpOut SignUp([FromBody]SignUpIn input)
         {

@@ -9,7 +9,7 @@ using System.Web.Http.Cors;
 
 namespace Angular4API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    
     public class GroupsController : BaseController
     {
 

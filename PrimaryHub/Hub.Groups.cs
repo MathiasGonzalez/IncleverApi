@@ -20,6 +20,7 @@ namespace PrimaryHub
                 using (var db = new DataEntitiesAcces.db())
                 {
 
+                    response.Groups = db.Groups.Where(grp => grp.groupid == 2).Select(grp => GroupMapper(grp)).ToList();
 
                 }
             }
@@ -54,6 +55,28 @@ namespace PrimaryHub
                 config.Ignore(g => g.snippets);
             });
             result = TinyMapper.Map<DaEntities.Group>(group);
+
+            if (group.snippets != null)
+            {
+                result.snippets = group.snippets.Select(s => SnippetMapper(s)).ToList();
+            }
+            return result;
+        }
+
+        Group GroupMapper(DaEntities.Group group)
+        {
+            Group result;
+            TinyMapper.Bind<DaEntities.Group, Group>(config =>
+             {
+                 config.Ignore(g => g.snippets);
+             });
+            result = TinyMapper.Map<Group>(group);
+
+            if (group.snippets != null)
+            {
+                result.snippets = group.snippets.Select(s => SnippetMapper(s)).ToList();
+            }
+
             return result;
         }
 

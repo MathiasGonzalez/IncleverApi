@@ -1,4 +1,5 @@
 ﻿using DataEntitiesAcces.CommonEntities;
+using DataEntitiesAcces.CommonEntities.Auth;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -55,6 +56,7 @@ where TContext : DbContext
         public DbSet<GroupPermission> GroupPermissions { get; set; }
         public DbSet<Snippet> Snippets { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Session> Sessions { get; set; }
 
 
         private static string strConCnf

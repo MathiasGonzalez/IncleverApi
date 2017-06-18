@@ -18,6 +18,8 @@ namespace DataEntitiesAcces.CommonEntities
 
         public bool? favorite { get; set; }
 
+        public bool? isdefault { get; set; }
+
         public bool? isprivate { get; set; }
 
         public bool? sticky { get; set; }
