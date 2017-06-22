@@ -16,4 +16,15 @@ namespace PrimaryHub.Parameters
     {
         public Session session { get; set; }
     }
+
+
+    public class GetLastSessionIn : BaseParameter
+    {
+        public Session session { get; set; }
+    }
+
+    public class GetLastSessionOut : BaseParameter
+    {
+        public Session session { get; set; }
+    }
 }

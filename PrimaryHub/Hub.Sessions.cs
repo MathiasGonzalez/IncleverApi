@@ -51,5 +51,30 @@ namespace PrimaryHub
             return result;
         }
 
+
+        public GetLastSessionOut GetLastSession(GetLastSessionIn input)
+        {
+            var result = new GetLastSessionOut();
+            try
+            {
+                using (var db = new DataEntitiesAcces.db())
+                {
+                    var session = db.Sessions.Where(sess => input.user.userid == sess.userid).SingleOrDefault();
+                    result.session =  new Entities.Auth.Session()
+                    {
+                        userid = session.userid ?? session.user?.userid,
+                        fechasession = session.fechasession,
+                        ip = session.ip,
+                        platform = session.platform,
+                        token = session.token
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                result.result = ex.Message;
+            }
+            return result;
+        }
     }
 }

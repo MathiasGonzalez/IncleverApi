@@ -14,14 +14,14 @@ namespace Angular4API.Controllers
   
     public class LoginController : BaseController
     {
-        [AllowAnonymous]
+   
         [HttpPost]
         public LogInOut LogIn([FromBody]LogInIn input)
         {
             return PrimaryHub.LogIn(input);
         }
 
-        [AllowAnonymous]
+
         [HttpPost]
         public SignUpOut SignUp([FromBody]SignUpIn input)
         {
