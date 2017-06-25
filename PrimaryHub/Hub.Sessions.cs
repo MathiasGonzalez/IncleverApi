@@ -26,7 +26,7 @@ namespace PrimaryHub
                     {
                         db.Sessions.Add(new DaEntities.Auth.Session()
                         {
-                            userid = input.session.userid ?? input.user?.userid,
+                            userid = input.session.userid ?? input.session.user.userid ??  input.user?.userid,
                             fechasession = DateTime.UtcNow,
                             ip = input.session.ip,
                             platform = input.session.platform,
@@ -37,7 +37,8 @@ namespace PrimaryHub
                     #region Caso. ya existe session
                     else
                     {
-
+                        session.fechasession = DateTime.UtcNow;
+                        session.ip = input.session.ip;
                     }
                     #endregion
 

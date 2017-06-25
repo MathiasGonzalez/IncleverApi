@@ -118,6 +118,20 @@ namespace DataEntitiesAcces.Migrations
                 .Index(t => t.userid);
             
             CreateTable(
+                "dbo.Sessions",
+                c => new
+                    {
+                        userid = c.Guid(nullable: false),
+                        fechasession = c.DateTime(),
+                        token = c.String(),
+                        platform = c.String(),
+                        ip = c.String(),
+                    })
+                .PrimaryKey(t => t.userid)
+                .ForeignKey("dbo.Users", t => t.userid)
+                .Index(t => t.userid);
+            
+            CreateTable(
                 "dbo.TagSnippets",
                 c => new
                     {
@@ -134,6 +148,7 @@ namespace DataEntitiesAcces.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.Sessions", "userid", "dbo.Users");
             DropForeignKey("dbo.GroupPermissions", "userid", "dbo.Users");
             DropForeignKey("dbo.GroupPermissions", "groupid", "dbo.Groups");
             DropForeignKey("dbo.TagSnippets", "Snippet_snipetid", "dbo.Snippets");
@@ -144,6 +159,7 @@ namespace DataEntitiesAcces.Migrations
             DropForeignKey("dbo.Accounts", "userid", "dbo.Users");
             DropIndex("dbo.TagSnippets", new[] { "Snippet_snipetid" });
             DropIndex("dbo.TagSnippets", new[] { "Tag_tag" });
+            DropIndex("dbo.Sessions", new[] { "userid" });
             DropIndex("dbo.GroupPermissions", new[] { "userid" });
             DropIndex("dbo.GroupPermissions", new[] { "groupid" });
             DropIndex("dbo.Groups", new[] { "categoryid" });
@@ -151,6 +167,7 @@ namespace DataEntitiesAcces.Migrations
             DropIndex("dbo.Fields", new[] { "snipettid" });
             DropIndex("dbo.Accounts", new[] { "userid" });
             DropTable("dbo.TagSnippets");
+            DropTable("dbo.Sessions");
             DropTable("dbo.GroupPermissions");
             DropTable("dbo.Tags");
             DropTable("dbo.Groups");

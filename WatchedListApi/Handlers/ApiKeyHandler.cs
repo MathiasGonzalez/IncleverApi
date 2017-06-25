@@ -37,7 +37,7 @@ namespace IncleverApi.Handlers
         {
             //var query = message.RequestUri.ParseQueryString();
             //string key = query["key"];
-            if (message.Method != HttpMethod.Options)
+            if (message.Method == HttpMethod.Post)// son todos post
             {
 
                 string key;

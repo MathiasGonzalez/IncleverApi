@@ -20,5 +20,6 @@ namespace Entities
         public string password { get; set; }
 
         public UserStatus status { get; set; }
+        
     }
 }

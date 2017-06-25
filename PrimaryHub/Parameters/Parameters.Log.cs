@@ -9,21 +9,21 @@ namespace PrimaryHub.Parameters
 {
     public class SignUpIn : BaseParameter
     {
-       
+
     }
+
     public class SignUpOut : BaseParameter
     {
-       
+
     }
 
     public class LogInIn : BaseParameter
     {
         public bool FireBaseForce { get; set; }
-       
     }
     public class LogInOut : BaseParameter
     {
-       
-       
+
+
     }
 }

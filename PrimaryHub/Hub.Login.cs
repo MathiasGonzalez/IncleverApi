@@ -15,7 +15,7 @@ namespace PrimaryHub
     public partial class Hub
     {
 
-        public LogInOut LogIn(LogInIn input)
+        public LogInOut LogIn(LogInIn input, string IP = null)
         {
             DA.CommonEntities.User newUser = new DA.CommonEntities.User();
 
@@ -50,6 +50,11 @@ namespace PrimaryHub
                     input.user.email = usuario.email;
                     input.user.userid = usuario.userid;
                     input.user.UID = usuario.UID;
+
+                    #region Nueva Session
+                    NewSession(input.user, IP);
+                    #endregion
+
                     return new LogInOut { user = input.user, result = "OK" };
                     #endregion
                 }
@@ -69,11 +74,18 @@ namespace PrimaryHub
                             });
                         }
                         #endregion
+
                         usuario = db.Usuarios.Where(user => user.email == newUser.email).SingleOrDefault();
-                        TinyMapper.Bind<DA.CommonEntities.User, User>(config =>
-                         {
-                         });
-                        return new LogInOut() { result = "FIREBASE", user = TinyMapper.Map<User>(usuario) };
+
+                        TinyMapper.Bind<DA.CommonEntities.User, User>(config => { });
+
+                        var ruser = TinyMapper.Map<User>(usuario);
+
+                        #region Nueva Session
+                        NewSession(ruser, IP);
+                        #endregion
+
+                        return new LogInOut() { result = "FIREBASE", user = ruser };
                     }
                     else
                     {
@@ -172,7 +184,7 @@ namespace PrimaryHub
                         db.GroupPermissions.Add(permisoPorDefectoDB);
                         db.SaveChanges();
                         #endregion
-                       
+
                         #endregion
 
                         transaccion.Commit();
@@ -192,5 +204,22 @@ namespace PrimaryHub
 
         }
 
+
+        /// <summary>
+        /// crea una nueva session
+        /// </summary>
+        /// <param name="user">El usuario</param>
+        /// <param name="IP">Dirección IP</param>
+        private void NewSession(User user, string IP)
+        {
+            NewSession(new NewSessionIn
+            {
+                session = new Entities.Auth.Session
+                {
+                    ip = IP,
+                    userid = user.userid
+                }
+            });
+        }
     }
 }

@@ -10,23 +10,23 @@ using Angular4API.Attributes;
 
 namespace Angular4API.Controllers
 {
-
+    [CustomAuthorize]
     public class SnippetsController : BaseController
     {
-        [CustomAuthorize]
-        [HttpPost]
+        
+        [HttpPost]       
         public FirstSnippetsOut FirstSnippets([FromBody]FirstSnippetsIn input)
         {
             return PrimaryHub.FirstSnippets(input);
         }
 
-        [HttpPost]
+        [HttpPost]     
         public AddSnippetOut AddSnippet([FromBody]AddSnippetIn input)
         {
             return PrimaryHub.AddSnippet(input);
         }
 
-        [HttpPost]
+        [HttpPost]     
         public AddSnippetOut EditSnippet([FromBody]AddSnippetIn input)
         {
             return PrimaryHub.EditSnippet(input);

@@ -37,23 +37,28 @@ namespace Angular4API.Attributes
         private bool AuthorizeRequest(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
 
-            //Write your code here to perform authorization
-            string Header = "token";
+            string Header = "Token";
+            string UserIDToken = "Uid";
 
-            var model = actionContext.ActionArguments.First().Value as BaseParameter;
+            #region Validar session
 
-            if (model == null || model.user == null)
+
+
+            var userToken = actionContext.Request.Headers.Where(h => h.Key == UserIDToken).FirstOrDefault();
+
+            if (userToken.Key == null || userToken.Value == null || userToken.Value.Count() < 1)
             {
                 return false;
             }
 
-            if (!ValidSession(model, GetClientIp(actionContext.Request)))
+            if (!ValidSession(Guid.Parse(userToken.Value.First()), GetClientIp(actionContext.Request)))
             {
                 return false;
             }
+            #endregion
 
-            #region Check token
-            var headerToken = actionContext.Request.Headers.Where(h => h.Key.ToUpper() == Header).FirstOrDefault();
+            #region Validar token
+            var headerToken = actionContext.Request.Headers.Where(h => h.Key == Header).FirstOrDefault();
 
             if (headerToken.Key == null || headerToken.Value == null || headerToken.Value.Count() < 1)
             {
@@ -71,9 +76,23 @@ namespace Angular4API.Attributes
 
         private bool ValidSession(BaseParameter input, String ip)
         {
-            #region Check Session
+            #region Validar Session
             var Hub = new PrimaryHub.Hub();
             var lastSession = Hub.GetLastSession(new GetLastSessionIn { user = input.user });
+            if (lastSession.session.ip == ip)//LA ip COINCIDE
+            {
+                return true;
+            }
+
+            #endregion
+            return false;
+        }
+
+        private bool ValidSession(Guid userid, String ip)
+        {
+            #region Validar Session
+            var Hub = new PrimaryHub.Hub();
+            var lastSession = Hub.GetLastSession(new GetLastSessionIn { user = new Entities.User { userid = userid } });
             if (lastSession.session.ip == ip)//LA ip COINCIDE
             {
                 return true;
