@@ -1,5 +1,6 @@
 ﻿using DataEntitiesAcces.CommonEntities;
 using DataEntitiesAcces.CommonEntities.Auth;
+using DataEntitiesAcces.CommonEntities.Profesional;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -58,6 +59,9 @@ where TContext : DbContext
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<Profesional> Profesionales { get; set; }
+        public DbSet<Proyecto> Proyectos { get; set; }
 
         private static string strConCnf
         {

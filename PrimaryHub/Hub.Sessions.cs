@@ -47,7 +47,7 @@ namespace PrimaryHub
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
             return result;
         }

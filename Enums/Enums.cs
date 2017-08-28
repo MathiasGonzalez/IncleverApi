@@ -12,12 +12,18 @@ namespace Enums
         Activo,
         Eliminado,
         Inactivo,
-        Aprobado
+        Aprobado,
+        Bloqueado
     }
     public enum Language
     {
         undefined,
         CSharp,
         Typescript        
+    }
+    public enum CategoriaPunto {
+        undefined,
+        General,
+        Velocidad
     }
 }

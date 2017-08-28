@@ -44,6 +44,10 @@
     <Compile Include="Account.cs" />
     <Compile Include="Auth\Session.cs" />
     <Compile Include="Category.cs" />
+    <Compile Include="Profesional\DocumentType.cs" />
+    <Compile Include="Profesional\Profesional.cs" />
+    <Compile Include="Profesional\Proyecto.cs" />
+    <Compile Include="Profesional\TipoProyecto.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupPermission.cs" />

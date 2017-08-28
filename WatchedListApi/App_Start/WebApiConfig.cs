@@ -7,6 +7,7 @@ using IncleverApi.Converters;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.Cors;
 
+
 namespace IncleverApi
 {
     public static class WebApiConfig
@@ -28,12 +29,17 @@ namespace IncleverApi
 
             // handler de seguridad
             config.MessageHandlers.Add(new Handlers.ApiKeyHandler("clave", "DEV_KEY"));
+
+            //config.Filters.Add(new AuthFilter());
+
             //query string handler
             //config.MessageHandlers.Add(new Handlers.QueryStringHandler());
 
             //config.Filters.Add(new CustomAuAttribute());
             // model binders especificos
             config.Services.Insert(typeof(System.Web.Http.ModelBinding.ModelBinderProvider), 0, new Binders.FakeItemModelBinder());
+
+      
 
             //model binder generico
             //config.Services.Insert(typeof(System.Web.Http.ModelBinding.ModelBinderProvider), 1, new Binders.GenericModelBinder());

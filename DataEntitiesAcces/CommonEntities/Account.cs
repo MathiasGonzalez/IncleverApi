@@ -20,6 +20,6 @@ namespace DataEntitiesAcces.CommonEntities
 
         public bool? onlyPrivate { get; set; }
 
-        public User user { get; set; }
+        public virtual User user { get; set; }
     }
 }

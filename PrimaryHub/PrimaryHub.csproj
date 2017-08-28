@@ -68,6 +68,7 @@
     <Compile Include="Aes.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DbHub.cs" />
+    <Compile Include="Profesional\Hub.Profesional.cs" />
     <Compile Include="Hub.cs" />
     <Compile Include="Hub.Groups.cs" />
     <Compile Include="Hub.Login.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Propiedad.cs" />
     <Compile Include="Parameters\BaseParameter.cs" />
+    <Compile Include="Parameters\Profesional\Parameters.Profesional.cs" />
     <Compile Include="Parameters\Parameters.Groups.cs" />
     <Compile Include="Parameters\Parameters.Log.cs" />
     <Compile Include="Parameters\Parameters.Sessions.cs" />
@@ -103,6 +105,7 @@
       <Name>Enums</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

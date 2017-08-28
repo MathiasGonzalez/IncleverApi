@@ -10,6 +10,10 @@ namespace Angular4API.Attributes
     public class CustomAuthorizeAttribute : AuthorizeAttribute
 
     {
+        /// <summary>
+        /// Establece si se debe chequear consistencia de la ip de la request
+        /// </summary>
+        private const bool VALIDAR_IP = false;
 
         public override void OnAuthorization(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
@@ -37,8 +41,8 @@ namespace Angular4API.Attributes
         private bool AuthorizeRequest(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
 
-            string Header = "Token";
-            string UserIDToken = "Uid";
+            const string Header = "Token";
+            const string UserIDToken = "Uid";
 
             #region Validar session
 
@@ -51,7 +55,7 @@ namespace Angular4API.Attributes
                 return false;
             }
 
-            if (!ValidSession(Guid.Parse(userToken.Value.First()), GetClientIp(actionContext.Request)))
+            if (VALIDAR_IP && !ValidSession(Guid.Parse(userToken.Value.First()), GetClientIp(actionContext.Request)))
             {
                 return false;
             }

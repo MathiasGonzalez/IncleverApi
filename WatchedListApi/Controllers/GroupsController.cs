@@ -10,26 +10,23 @@ using System.Web.Http.Cors;
 
 namespace Angular4API.Controllers
 {
-    
+    [CustomAuthorize]
     public class GroupsController : BaseController
     {
 
-        [HttpPost]
-        [CustomAuthorize]
+        [HttpPost]      
         public GetGroupsOut GetGroups([FromBody]GetGroupsIn input)
         {          
             return PrimaryHub.GetGroups(input);
         }
 
-        [HttpPost]
-        [CustomAuthorize]
+        [HttpPost]   
         public RemoveGroupOut RemoveGroup([FromBody]RemoveGroupIn input)
         {
             return PrimaryHub.RemoveGroup(input);
         }
 
         [HttpPost]
-        [CustomAuthorize]
         public AddGroupOut AddGroup([FromBody]AddGroupIn input)
         {
             return PrimaryHub.AddGroup(input);
